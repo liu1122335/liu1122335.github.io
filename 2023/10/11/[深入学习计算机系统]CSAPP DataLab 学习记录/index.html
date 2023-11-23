@@ -17,7 +17,7 @@
   localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
   translate: undefined,
   noticeOutdate: undefined,
-  highlight: {"plugin":"prismjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
   copy: {
     success: '复制成功',
     error: '复制错误',
@@ -162,7 +162,7 @@
       }
     }
     detectApple()
-    })(window)</script><link rel="stylesheet" href="/css/universe.css"><link rel="stylesheet" href="/css/footer.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/friend_404.gif" data-original="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">3</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 博文</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background: transparent"><nav id="nav"><span id="blog-info"><a href="/" title="飞行艇"><span class="site-name">飞行艇</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 博文</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">[深入理解计算机系统]CSAPP DataLab 学习记录</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-10-11T11:36:28.000Z" title="发表于 2023-10-11 19:36:28">2023-10-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-11-20T16:39:39.771Z" title="更新于 2023-11-21 00:39:39">2023-11-21</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/CSAPP/">CSAPP</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/CSAPP/Lab/">Lab</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="[深入理解计算机系统]CSAPP DataLab 学习记录"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="前言"><a href="#前言" class="headerlink" title="前言:"></a>前言:</h1><p>&emsp;&emsp;最近在看完《深入理解计算机系统》前两章之后，也将其第一个Lab——DataLab完成了，于是来对此做一个记录。DataLab主要是对整型和浮点型的实验，其中对条件语句、算数运算还有逻辑运算进行了不同的限制。</p>
+    })(window)</script><link rel="stylesheet" href="/css/universe.css"><link rel="stylesheet" href="/css/footer.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/friend_404.gif" data-original="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">3</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 博文</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background: transparent"><nav id="nav"><span id="blog-info"><a href="/" title="飞行艇"><span class="site-name">飞行艇</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 博文</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">[深入理解计算机系统]CSAPP DataLab 学习记录</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-10-11T11:36:28.000Z" title="发表于 2023-10-11 19:36:28">2023-10-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-11-20T16:39:39.771Z" title="更新于 2023-11-21 00:39:39">2023-11-21</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/CSAPP/">CSAPP</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/CSAPP/Lab/">Lab</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">5.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>20分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="[深入理解计算机系统]CSAPP DataLab 学习记录"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="前言"><a href="#前言" class="headerlink" title="前言:"></a>前言:</h1><p>&emsp;&emsp;最近在看完《深入理解计算机系统》前两章之后，也将其第一个Lab——DataLab完成了，于是来对此做一个记录。DataLab主要是对整型和浮点型的实验，其中对条件语句、算数运算还有逻辑运算进行了不同的限制。</p>
 <h1 id="实验环境的搭建："><a href="#实验环境的搭建：" class="headerlink" title="实验环境的搭建："></a>实验环境的搭建：</h1><p>&emsp;&emsp;首先由于其实验环境是unix，我使用的是VMware Workstation + Ubuntu来搭建实验环境。VMware虚拟机和Ubuntu的安装可以看这篇博客<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41782425/article/details/85119258">VMware Ubuntu安装详细过程（详细图解）_vmware安装ubuntu-CSDN博客</a>，具体搭建过程可看这篇博客：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_39876147/article/details/124481740">【CSAPP】Lab0 - 环境配置_csapp 3e操作环境搭建_Luqwera的博客-CSDN博客</a>。</p>
 <p>&emsp;&emsp;如果不想安装虚拟机，也可以使用Docker里的Linux容器来搭建，具体的操作过程可看这篇博客<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_39029579/article/details/112169980">超详解 CS:APP:Lab1-DataLab_optional cmd line args-CSDN博客</a>。</p>
 <p>&emsp;&emsp;完成环境的搭建后便可以开始做DataLab了。</p>
@@ -172,17 +172,16 @@
 <p>&emsp;&emsp;就是 “同或的非” = “异或”，但是里面有“或”运算符，所以要再使用一下德摩根定律：</p>
 <p>​                                                                            <img src="/img/friend_404.gif" data-original="/imgs/$%7BuseImgs%7D/img_2.png" alt=""></p>
 <p>&emsp;&emsp;就可以解决这道题了。</p>
-<pre class=" language-lang-c"><code class="language-lang-c">/* 
- * bitXor - x^y using only ~ and & 
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">/* 
+ * bitXor - x^y using only ~ and &amp; 
  *   Example: bitXor(4, 5) = 1
- *   Legal ops: ~ &
+ *   Legal ops: ~ &amp;
  *   Max ops: 14
  *   Rating: 1
- */
-int bitXor(int x, int y) &#123;
-  return ~(x & y) & ~(~x & ~y);
-&#125;
-</code></pre>
+ */</span>
+<span class="token keyword">int</span> <span class="token function">bitXor</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">,</span> <span class="token keyword">int</span> y<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">return</span> <span class="token operator">~</span><span class="token punctuation">(</span>x <span class="token operator">&amp;</span> y<span class="token punctuation">)</span> <span class="token operator">&amp;</span> <span class="token operator">~</span><span class="token punctuation">(</span><span class="token operator">~</span>x <span class="token operator">&amp;</span> <span class="token operator">~</span>y<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="2-tmin"><a href="#2-tmin" class="headerlink" title="2.tmin"></a>2.tmin</h2><p>&emsp;&emsp;题目的意思就是返回对32位 int 最小的二补数（就是补码）。下面是 n 比特的二补数系统中几个特别的数字：</p>
 <div class="table-container">
 <table>
@@ -233,90 +232,84 @@ int bitXor(int x, int y) &#123;
 </table>
 </div>
 <p>&emsp;&emsp;所以在32位的环境下，补码的最小值就是：Tmin = $-2^{32-1}$$=-2^{31}$。用十六进制表示就是0x80000000，及将 1 向左移 31位。这样就可以解决了。</p>
-<pre class=" language-lang-c"><code class="language-lang-c">/* 
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">/* 
  * tmin - return minimum two's complement integer 
- *   Legal ops: ! ~ & ^ | + << >>
+ *   Legal ops: ! ~ &amp; ^ | + &lt;&lt; >>
  *   Max ops: 4
  *   Rating: 1
- */
-int tmin(void) &#123;
-  return 1<<31;
-&#125;
-</code></pre>
+ */</span>
+<span class="token keyword">int</span> <span class="token function">tmin</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">return</span> <span class="token number">1</span><span class="token operator">&lt;&lt;</span><span class="token number">31</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="3-isTmax"><a href="#3-isTmax" class="headerlink" title="3.isTmax"></a>3.isTmax</h2><p>&emsp;&emsp;这道题目需要你对输入的 x 进行判断是否为最大的补码，如果是就返回 1 ，不是则返回 0 。</p>
 <p>&emsp;&emsp;由上一题可以知道，在32位的环境中最大的补码为 $2^{31}-1$ 及 0111 1111 …. 1111，所以我们可以从这个最大数入手。</p>
 <p>&emsp;&emsp;首先可以发现 Tmax = 0111 1111 …. 1111 在加上一个 1 后会直接溢出变成 1000 0000 …. 0000，然后再对其取反后，就又变回了原来的 Tmax，故可以得到~(Tmax+1)= Tmax，因此，我们现在只需要判断~(x+1)与 x 是否相等就可以得出结论。但是题目限制无法使用等号，所以就可以利用异或运算的一个特性，即 x⊕x=0 ，就是两个相同的数进行异或后结果为 0 ，这里需要相同情况下返回 1，故要使用 ! 符号。所以最后组合在一起就是:</p>
-<pre class=" language-lang-c"><code class="language-lang-c">return !(~(x+1)^x);
-</code></pre>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">return</span> <span class="token operator">!</span><span class="token punctuation">(</span><span class="token operator">~</span><span class="token punctuation">(</span>x<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">^</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>&emsp;&emsp;但是当你保存检测后发现没有通过。</p>
 <p><img src="/img/friend_404.gif" data-original="/imgs/$%7BuseImgs%7D/img_3.png" alt=""></p>
 <p>&emsp;&emsp;仔细看了错误后会发现当 x = -1 时，返回的是 1 ，但应该是 0。这是因为在补码中 -1 = 1111 1111 …. 1111，-1+1 = 1 0000 0000 …. 0000 ，由于超过了32位的比特位，所以会被截断，高位进位无效，此时等于 0000 0000 …. 0000，即为0，而且正好每一位都与 -1的每一位互补。故需要我们来对 -1 进行特判。可以在 x+1 后对其进行 !! 操作来区别最大值和 -1 。</p>
 <p>&emsp;&emsp;故最终解决方法如下。</p>
-<pre class=" language-lang-c"><code class="language-lang-c">/*
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">/*
  * isTmax - returns 1 if x is the maximum, two's complement number,
  *     and 0 otherwise 
- *   Legal ops: ! ~ & ^ | +
+ *   Legal ops: ! ~ &amp; ^ | +
  *   Max ops: 10
  *   Rating: 1
- */
-int isTmax(int x) &#123;
-  return !(~(x+1)^x)&!!(x+1);
-&#125;
-</code></pre>
+ */</span>
+<span class="token keyword">int</span> <span class="token function">isTmax</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">return</span> <span class="token operator">!</span><span class="token punctuation">(</span><span class="token operator">~</span><span class="token punctuation">(</span>x<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">^</span>x<span class="token punctuation">)</span><span class="token operator">&amp;</span><span class="token operator">!</span><span class="token operator">!</span><span class="token punctuation">(</span>x<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="4-allOddBits"><a href="#4-allOddBits" class="headerlink" title="4.allOddBits"></a>4.allOddBits</h2><p>&emsp;&emsp;该题的意思和上题差不多，就是判断 x 补码的奇数位是否全为 1，如果是就返回1，不是则返回0。并且告知了你32位是从第0位到第31位，所以不要判断错了。</p>
 <p>&emsp;&emsp;读懂题意，就能想到用奇数位上全是1，偶数位上全为0的数，即0xAAAAAAAA与 x 进行与运算（&amp;），再看其结果是否任然等于0xAAAAAAAA，若相等，则 x 符合条件，返回1，不等则返回0。同样这一题与上一题一样，无法使用等号，所以继续使用异或来判断。但是需要注意本实验有一个要求</p>
-<pre><code>/*
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;*
 Integer constants 0 through 255 (0xFF), inclusive. You are
       not allowed to use big constants such as 0xffffffff.
-*/
-</code></pre><p>&emsp;&emsp;故无法直接定义 0xAAAAAAAA这么大的数，所以需要先得到0xAAAAAAAA。可以考虑用0xAA，通过移位和运算获得。之后就迎刃而解了。</p>
-<pre class=" language-lang-c"><code class="language-lang-c">/* 
+*&#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>&emsp;&emsp;故无法直接定义 0xAAAAAAAA这么大的数，所以需要先得到0xAAAAAAAA。可以考虑用0xAA，通过移位和运算获得。之后就迎刃而解了。</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">/* 
  * allOddBits - return 1 if all odd-numbered bits in word set to 1
  *   where bits are numbered from 0 (least significant) to 31 (most significant)
  *   Examples allOddBits(0xFFFFFFFD) = 0, allOddBits(0xAAAAAAAA) = 1
- *   Legal ops: ! ~ & ^ | + << >>
+ *   Legal ops: ! ~ &amp; ^ | + &lt;&lt; >>
  *   Max ops: 12
  *   Rating: 2
- */
-int allOddBits(int x) &#123;
-  int temp = 0xAA;
-  int a = temp + (temp<<8);
-  int b = a + (a<<16);
-  return !((x&b)^b);
-&#125;
-</code></pre>
+ */</span>
+<span class="token keyword">int</span> <span class="token function">allOddBits</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">int</span> temp <span class="token operator">=</span> <span class="token number">0xAA</span><span class="token punctuation">;</span>
+  <span class="token keyword">int</span> a <span class="token operator">=</span> temp <span class="token operator">+</span> <span class="token punctuation">(</span>temp<span class="token operator">&lt;&lt;</span><span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">int</span> b <span class="token operator">=</span> a <span class="token operator">+</span> <span class="token punctuation">(</span>a<span class="token operator">&lt;&lt;</span><span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> <span class="token operator">!</span><span class="token punctuation">(</span><span class="token punctuation">(</span>x<span class="token operator">&amp;</span>b<span class="token punctuation">)</span><span class="token operator">^</span>b<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="5-negate"><a href="#5-negate" class="headerlink" title="5.negate"></a>5.negate</h2><p>&emsp;&emsp;这一题就是求 x 的相反数，一个很基础的结论就是~x + x = -1，调整一下就是 -x = ~x+1（牢记），补码的常见操作。</p>
 <p>于是这题就解决了</p>
-<pre class=" language-lang-c"><code class="language-lang-c">/* 
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">/* 
  * negate - return -x 
  *   Example: negate(1) = -1.
- *   Legal ops: ! ~ & ^ | + << >>
+ *   Legal ops: ! ~ &amp; ^ | + &lt;&lt; >>
  *   Max ops: 5
  *   Rating: 2
- */
-int negate(int x) &#123;
-  return ~x+1;
-&#125;
-</code></pre>
+ */</span>
+<span class="token keyword">int</span> <span class="token function">negate</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">return</span> <span class="token operator">~</span>x<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="6-isAsciiDigit"><a href="#6-isAsciiDigit" class="headerlink" title="6.isAsciiDigit"></a>6.isAsciiDigit</h2><p>&emsp;&emsp;该题就是来判断 x 是否在 0x30 到 0x39 之间，如果是则返回 1。</p>
 <p>&emsp;&emsp;思路就是先通过右移来判断除了后4位外，其余的位是否与0x3相同，将其作为第一个条件，然后来判断后四位是否在0到9之间。</p>
 <p>&emsp;&emsp;第一个条件可以通过将 x 右移4位后与0x3进行异或来判断是否相同，第二条件就将 x 和0xF进行与运算这样就可以获得后四位所表示的数了，在将其减去10，即0xA，最后只用判断减去10后的结果的符号。由于无法使用减法，所以这里使用上一题的结论，加上-10就行，（-10 = ~10+1）。</p>
 <p>&emsp;&emsp;最后可以通过右移31位获得结果的符号，若为负，则为-1，若为正，则为0，又因为任何一个数与-1进行与运算都会等于自己，所以第一个条件与第二个条件均成立时才会返回 1。</p>
-<pre class=" language-lang-c"><code class="language-lang-c">/* 
- * isAsciiDigit - return 1 if 0x30 <= x <= 0x39 (ASCII codes for characters '0' to '9')
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">/* 
+ * isAsciiDigit - return 1 if 0x30 &lt;= x &lt;= 0x39 (ASCII codes for characters '0' to '9')
  *   Example: isAsciiDigit(0x35) = 1.
  *            isAsciiDigit(0x3a) = 0.
  *            isAsciiDigit(0x05) = 0.
- *   Legal ops: ! ~ & ^ | + << >>
+ *   Legal ops: ! ~ &amp; ^ | + &lt;&lt; >>
  *   Max ops: 15
  *   Rating: 3
- */
-int isAsciiDigit(int x) &#123;
-  int a = !((x>>4)^0x3);
-  int b = ((x & 0xf) + ~0xA+1)>>31;
-  return a & b;
-&#125;
-</code></pre>
+ */</span>
+<span class="token keyword">int</span> <span class="token function">isAsciiDigit</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token operator">!</span><span class="token punctuation">(</span><span class="token punctuation">(</span>x<span class="token operator">>></span><span class="token number">4</span><span class="token punctuation">)</span><span class="token operator">^</span><span class="token number">0x3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">int</span> b <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>x <span class="token operator">&amp;</span> <span class="token number">0xf</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token operator">~</span><span class="token number">0xA</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">>></span><span class="token number">31</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> a <span class="token operator">&amp;</span> b<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="7-conditional"><a href="#7-conditional" class="headerlink" title="7.conditional"></a>7.conditional</h2><p>&emsp;&emsp;这一题就是使用允许的运算操作符：!  ~  &amp;  ^  |  +  &lt;&lt;  &gt;&gt;，来实现三目运算符，即当 x 为真时（x ≠ 0）返回 y ，为假时（x = 0），返回 z 。</p>
 <p>&emsp;&emsp;首先可以先判断 x 为真为假，对 x 使用两次 ! 运算，若 x 为真，则此时为 1，反之，此时为 0。接着可以想到题目不是返回 y 就是返回 z ，所以可以想到使用或运算（|），现在需要我们在 x 为真时，将包含 z 的那一部分变为0，包含 y 的那一部分变为 y ，反之同理。然后可以想到任何一个数与 0 进行与运算都等于 0  ，任何一个数与 -1 进行与运算都等于自己本身。并且 ~0 = -1，~(-1) = 0，对于0 和 -1 都是 x 为假为真时进行取反操作可以得到的，故可以列出下表</p>
 <div class="table-container">
@@ -352,64 +345,60 @@ int isAsciiDigit(int x) &#123;
 </table>
 </div>
 <p>&emsp;&emsp;可以发现完全符合题目所需，故解决方法如下</p>
-<pre class=" language-lang-c"><code class="language-lang-c">/* 
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">/* 
  * conditional - same as x ? y : z 
  *   Example: conditional(2,4,5) = 4
- *   Legal ops: ! ~ & ^ | + << >>
+ *   Legal ops: ! ~ &amp; ^ | + &lt;&lt; >>
  *   Max ops: 16
  *   Rating: 3
- */
-int conditional(int x, int y, int z) &#123;
-  int a = !!x;
-  int b = ~a+1;
-  return (b & y)|(~b & z);
-&#125;
-</code></pre>
+ */</span>
+<span class="token keyword">int</span> <span class="token function">conditional</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">,</span> <span class="token keyword">int</span> y<span class="token punctuation">,</span> <span class="token keyword">int</span> z<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token operator">!</span><span class="token operator">!</span>x<span class="token punctuation">;</span>
+  <span class="token keyword">int</span> b <span class="token operator">=</span> <span class="token operator">~</span>a<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> <span class="token punctuation">(</span>b <span class="token operator">&amp;</span> y<span class="token punctuation">)</span><span class="token operator">|</span><span class="token punctuation">(</span><span class="token operator">~</span>b <span class="token operator">&amp;</span> z<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="8-isLessOrEqual"><a href="#8-isLessOrEqual" class="headerlink" title="8.isLessOrEqual"></a>8.isLessOrEqual</h2><p>&emsp;&emsp;通过题目的描述，需要我们来判断 x 与 y 的大小，如果 x &lt;= y 时返回1，否则返回0。</p>
 <p>&emsp;&emsp;首先可以很快想到如果 x 是个负数， y 是个正数，那么 x 一定小于 y，则一定返回1，相反，当  x 为正，y为负，则一定返回0。所以可以先判断符号，通过右移31来获取符号位，但由于负数一般采用的是算术右移，所以最后都需要与1进行与运算，得到符号位。</p>
 <p>&emsp;&emsp;接着使用异或来判断是否符号相同，若相同，则需要用 x 减去 y，即加上-y ，再来判断相减之后的符号位，但同时要注意到当x = y时，相减之后符号位为 0 ，与 x &lt; y时相减后情况不同，所以在此用了另一种方法，x &lt;= y等同于 x &lt; y+1，于是最后变为 x - y -1&lt; 0，同时 -y = ~y +1，所以最后求的就是 x + ~y 的符号了。</p>
-<pre class=" language-lang-c"><code class="language-lang-c">/* 
- * isLessOrEqual - if x <= y  then return 1, else return 0 
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">/* 
+ * isLessOrEqual - if x &lt;= y  then return 1, else return 0 
  *   Example: isLessOrEqual(4,5) = 1.
- *   Legal ops: ! ~ & ^ | + << >>
+ *   Legal ops: ! ~ &amp; ^ | + &lt;&lt; >>
  *   Max ops: 24
  *   Rating: 3
- */
-int isLessOrEqual(int x, int y) &#123;
-  int a = (x>>31)&1;
-  int b = (y>>31)&1;
-  int diff = a & (!b);//不同符号时,仅x为负，为y为正时，为1
-  int same = a ^ b;
-  int temp = ((!same) & (((x+~y)>>31)&1));
-  return diff | temp;
-&#125;
-</code></pre>
+ */</span>
+<span class="token keyword">int</span> <span class="token function">isLessOrEqual</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">,</span> <span class="token keyword">int</span> y<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token punctuation">(</span>x<span class="token operator">>></span><span class="token number">31</span><span class="token punctuation">)</span><span class="token operator">&amp;</span><span class="token number">1</span><span class="token punctuation">;</span>
+  <span class="token keyword">int</span> b <span class="token operator">=</span> <span class="token punctuation">(</span>y<span class="token operator">>></span><span class="token number">31</span><span class="token punctuation">)</span><span class="token operator">&amp;</span><span class="token number">1</span><span class="token punctuation">;</span>
+  <span class="token keyword">int</span> diff <span class="token operator">=</span> a <span class="token operator">&amp;</span> <span class="token punctuation">(</span><span class="token operator">!</span>b<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//不同符号时,仅x为负，为y为正时，为1</span>
+  <span class="token keyword">int</span> same <span class="token operator">=</span> a <span class="token operator">^</span> b<span class="token punctuation">;</span>
+  <span class="token keyword">int</span> temp <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token operator">!</span>same<span class="token punctuation">)</span> <span class="token operator">&amp;</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">(</span>x<span class="token operator">+</span><span class="token operator">~</span>y<span class="token punctuation">)</span><span class="token operator">>></span><span class="token number">31</span><span class="token punctuation">)</span><span class="token operator">&amp;</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> diff <span class="token operator">|</span> temp<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="9-logicalNeg"><a href="#9-logicalNeg" class="headerlink" title="9.logicalNeg"></a>9.logicalNeg</h2><p>&emsp;&emsp;这里要求我们通过使用允许的运算操作符：~  &amp;  ^  |  +  &lt;&lt;  &gt;&gt;  来实现逻辑非操作（!），即对于 x ，只要 x 不为0 ，那么就返回 0，否则返回 1。</p>
 <p>&emsp;&emsp;首先，需要知道一个不为0的数与自己的相反数进行或运算会等于一个负数，0与自己的相反数进行或运算结果还是 0 ，并且一个负数右移31位后结果为 -1 ，而 0右移31位后则还是 0，最后再加上一个1，那么就都符合题目的需求了。</p>
-<pre class=" language-lang-c"><code class="language-lang-c">/* 
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">/* 
  * logicalNeg - implement the ! operator, using all of 
  *              the legal operators except !
  *   Examples: logicalNeg(3) = 0, logicalNeg(0) = 1
- *   Legal ops: ~ & ^ | + << >>
+ *   Legal ops: ~ &amp; ^ | + &lt;&lt; >>
  *   Max ops: 12
  *   Rating: 4 
- */
-int logicalNeg(int x) &#123;
-  int a = ~x+1;
-  return ((x|a)>>31)+1;
-&#125;
-</code></pre>
+ */</span>
+<span class="token keyword">int</span> <span class="token function">logicalNeg</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token operator">~</span>x<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>x<span class="token operator">|</span>a<span class="token punctuation">)</span><span class="token operator">>></span><span class="token number">31</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="10-howManyBits"><a href="#10-howManyBits" class="headerlink" title="10.howManyBits"></a>10.howManyBits</h2><p>&emsp;&emsp;首先理解题意，要求求一个值使用补码来表示最少需要多少位。</p>
 <p>通过对样例的分析可以得出结论，当 x 为正数时，在补码中位于最高位 1 之前的 0 是可以省略的，所以最少位数等于最高位 1 的位数加上 1 位符号位，而当 x 是一个负数时，同样的道理，位于最高位 0 之前的 1 也是可以省略的，所以此时最少位数等于最高位 0 的位数加上 1 位符号位，而对于 0 ，由于其补码没有符号位，所以表示只需 1 位。</p>
 <p>&emsp;&emsp;按照上述过程，需要进行查找。为了方便统一，这里先将为负数的 x 取反，这样就和正数一样，只需找到最高位 1 后再加 1 位就行了，所以有如下操作</p>
-<pre class=" language-lang-c"><code class="language-lang-c"> int sign = x>>31;//先取符号位。
- x = ((~sign) & x) | (sign & (~x));//x为非负数则不变，x为负数则按位取反。
-</code></pre>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">int</span> sign <span class="token operator">=</span> x<span class="token operator">>></span><span class="token number">31</span><span class="token punctuation">;</span><span class="token comment">//先取符号位。</span>
+x <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token operator">~</span>sign<span class="token punctuation">)</span> <span class="token operator">&amp;</span> x<span class="token punctuation">)</span> <span class="token operator">|</span> <span class="token punctuation">(</span>sign <span class="token operator">&amp;</span> <span class="token punctuation">(</span><span class="token operator">~</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//x为非负数则不变，x为负数则按位取反。</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>&emsp;&emsp;接下来就是进行查找了，这里可以使用到二分的思想来进行查找，先看 x 最高的 16 位，将 x 进行右移 16 位，再将其规格化。</p>
 <p>&emsp;&emsp;如果最高 16 位有 1 ，那么处理后的 x 就等于 1，故此时需要的位数至少为 16位，可以对该权值进行记录，只需要将处理后的 x 左移 4位，之后就对 <u>x 右移 16 位后的低16位</u>（注：此时的低16位就是原本 x 的高 16位）进行二分，将低 16 位中的高 8 位进行同样的操作，从而找到在 x 高16位中最高位 1。</p>
 <p>&emsp;&emsp;如果没有 1 ，那么  x  处理后就等于 0 ，记录的值也等于 0 ，此时就不需要右移，而是在 x 的低 16 位中的高 8 位进行同样的操作。</p>
 <p>&emsp;&emsp;综上，x 的右移操作可以总结为 x &gt;&gt; 本次记录的权值。以此类推，分别对高 8 位，4 位，2 位，1位进行同样操作。最后将所有权值进行相加，不要忘了在加一个 1 （对于非 0 数是加上 1 位的符号位，对于 0 是自己本身的 1 位。），此时就满足题目的要求了。</p>
-<pre class=" language-lang-c"><code class="language-lang-c">/* howManyBits - return the minimum number of bits required to represent x in
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">/* howManyBits - return the minimum number of bits required to represent x in
  *             two's complement
  *  Examples: howManyBits(12) = 5
  *            howManyBits(298) = 10
@@ -417,28 +406,27 @@ int logicalNeg(int x) &#123;
  *            howManyBits(0)  = 1
  *            howManyBits(-1) = 1
  *            howManyBits(0x80000000) = 32
- *  Legal ops: ! ~ & ^ | + << >>
+ *  Legal ops: ! ~ &amp; ^ | + &lt;&lt; >>
  *  Max ops: 90
  *  Rating: 4
- */
-int howManyBits(int x) &#123;
-  int sign = x>>31;
-  x = ((~sign) & x) | (sign & (~x));
-  int bit_16 = (!!(x>>16))<<4;
-  x = x >> bit_16;
-  int bit_8 = (!!(x>>8))<<3;
-  x = x >> bit_8;
-  int bit_4 = (!!(x>>4))<<2;
-  x = x >> bit_4;
-  int bit_2 = (!!(x>>2))<<1;
-  x = x >> bit_2;
-  int bit_1 = (!!(x>>1));
-  x = x>>bit_1;
-  int bit_0 = x;
-  int ans = bit_16+bit_8+bit_4+bit_2+bit_1+bit_0+1;
-  return ans;
-&#125;
-</code></pre>
+ */</span>
+<span class="token keyword">int</span> <span class="token function">howManyBits</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">int</span> sign <span class="token operator">=</span> x<span class="token operator">>></span><span class="token number">31</span><span class="token punctuation">;</span>
+  x <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token operator">~</span>sign<span class="token punctuation">)</span> <span class="token operator">&amp;</span> x<span class="token punctuation">)</span> <span class="token operator">|</span> <span class="token punctuation">(</span>sign <span class="token operator">&amp;</span> <span class="token punctuation">(</span><span class="token operator">~</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">int</span> bit_16 <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token operator">!</span><span class="token punctuation">(</span>x<span class="token operator">>></span><span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">&lt;&lt;</span><span class="token number">4</span><span class="token punctuation">;</span>
+  x <span class="token operator">=</span> x <span class="token operator">>></span> bit_16<span class="token punctuation">;</span>
+  <span class="token keyword">int</span> bit_8 <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token operator">!</span><span class="token punctuation">(</span>x<span class="token operator">>></span><span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">&lt;&lt;</span><span class="token number">3</span><span class="token punctuation">;</span>
+  x <span class="token operator">=</span> x <span class="token operator">>></span> bit_8<span class="token punctuation">;</span>
+  <span class="token keyword">int</span> bit_4 <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token operator">!</span><span class="token punctuation">(</span>x<span class="token operator">>></span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">&lt;&lt;</span><span class="token number">2</span><span class="token punctuation">;</span>
+  x <span class="token operator">=</span> x <span class="token operator">>></span> bit_4<span class="token punctuation">;</span>
+  <span class="token keyword">int</span> bit_2 <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token operator">!</span><span class="token punctuation">(</span>x<span class="token operator">>></span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">&lt;&lt;</span><span class="token number">1</span><span class="token punctuation">;</span>
+  x <span class="token operator">=</span> x <span class="token operator">>></span> bit_2<span class="token punctuation">;</span>
+  <span class="token keyword">int</span> bit_1 <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token operator">!</span><span class="token punctuation">(</span>x<span class="token operator">>></span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  x <span class="token operator">=</span> x<span class="token operator">>></span>bit_1<span class="token punctuation">;</span>
+  <span class="token keyword">int</span> bit_0 <span class="token operator">=</span> x<span class="token punctuation">;</span>
+  <span class="token keyword">int</span> ans <span class="token operator">=</span> bit_16<span class="token operator">+</span>bit_8<span class="token operator">+</span>bit_4<span class="token operator">+</span>bit_2<span class="token operator">+</span>bit_1<span class="token operator">+</span>bit_0<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> ans<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="11-floatScale2"><a href="#11-floatScale2" class="headerlink" title="11.floatScale2"></a>11.floatScale2</h2><p>&emsp;&emsp;从这里开始就属于浮点数运算部分，首先得了解一下IEEE浮点表示，在IEEE浮点标准中用</p>
 <script type="math/tex; mode=display">
 V=(-1)^{s} \times M\times 2^{E}</script><p>&emsp;&emsp;来表示一个数。其中 符号 s 表示正负（s=0表示正数，s=1表示负数），尾数M 是一个<strong>二进制小数</strong>，阶码 E 是对浮点数的加权，权重为 2 的 E 次幂（可能为负数）。因此将浮点数的位表示划分为三个部分。<img src="/img/friend_404.gif" data-original="/imgs/$%7BuseImgs%7D/img_4.png" alt=""></p>
@@ -459,49 +447,48 @@ E=1-Bias</script><script type="math/tex; mode=display">
 M=f</script><p>&emsp;&emsp;当 exp 全为 1 时，属于特殊值，其中当小数域全为 0 时，表示的是无穷（∞），按照 s 的正负分为 +∞ 与 -∞ ；当小数域不为 0 时，结果被称为“NaN”，即不是一个数。 </p>
 <p>&emsp;&emsp;现在可以来看这一题了，题目需要我们求出浮点数* 2 之后的值。</p>
 <p>&emsp;&emsp;首先依据IEEE浮点数分别求出单精度浮点数的符号位、阶码位以及小数位。由上面可知 float 是32位，一般 s 为 1 位，exp 为 8 位，frac 为 23 位。可以通过位运算来获得，如下</p>
-<pre><code> unsigned s = (uf&gt;&gt;31)&amp;1;
- unsigned e = (uf &amp; 0x7f800000)&gt;&gt;23;
- unsigned f = (uf &amp; 0x7fffff);
-</code></pre><p>&emsp;&emsp;然后根据上面的三种情况进行分析，即规格化的值、非规格化的值以及特殊值。其中，当为特殊值时，两种情况都是可以直接返回的。当为非规格化的值时，那么值就为 0 或无穷小，直接<em> 2返回就行，f 此时就是尾码，所以就直接 f &lt;&lt;= 1。当为规格化的值时， 由IEEE浮点表达式可知，只需要将exp+1，那么E也会 + 1，最终就会实现</em>2的效果。</p>
+<pre class="line-numbers language-none"><code class="language-none">unsigned s &#x3D; (uf&gt;&gt;31)&amp;1;
+unsigned e &#x3D; (uf &amp; 0x7f800000)&gt;&gt;23;
+unsigned f &#x3D; (uf &amp; 0x7fffff);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>&emsp;&emsp;然后根据上面的三种情况进行分析，即规格化的值、非规格化的值以及特殊值。其中，当为特殊值时，两种情况都是可以直接返回的。当为非规格化的值时，那么值就为 0 或无穷小，直接<em> 2返回就行，f 此时就是尾码，所以就直接 f &lt;&lt;= 1。当为规格化的值时， 由IEEE浮点表达式可知，只需要将exp+1，那么E也会 + 1，最终就会实现</em>2的效果。</p>
 <p>&emsp;&emsp;所以最终解决方法如下</p>
-<pre class=" language-lang-c"><code class="language-lang-c">/* 
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">/* 
  * floatScale2 - Return bit-level equivalent of expression 2*f for
  *   floating point argument f.
  *   Both the argument and result are passed as unsigned int's, but
  *   they are to be interpreted as the bit-level representation of
  *   single-precision floating point values.
  *   When argument is NaN, return argument
- *   Legal ops: Any integer/unsigned operations incl. ||, &&. also if, while
+ *   Legal ops: Any integer/unsigned operations incl. ||, &amp;&amp;. also if, while
  *   Max ops: 30
  *   Rating: 4
- */
-unsigned floatScale2(unsigned uf) &#123;
-  unsigned s = (uf>>31)&1;
-  unsigned e = (uf & 0x7f800000)>>23;
-  unsigned f = (uf & 0x7fffff);
-  unsigned ans;
+ */</span>
+<span class="token keyword">unsigned</span> <span class="token function">floatScale2</span><span class="token punctuation">(</span><span class="token keyword">unsigned</span> uf<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">unsigned</span> s <span class="token operator">=</span> <span class="token punctuation">(</span>uf<span class="token operator">>></span><span class="token number">31</span><span class="token punctuation">)</span><span class="token operator">&amp;</span><span class="token number">1</span><span class="token punctuation">;</span>
+  <span class="token keyword">unsigned</span> e <span class="token operator">=</span> <span class="token punctuation">(</span>uf <span class="token operator">&amp;</span> <span class="token number">0x7f800000</span><span class="token punctuation">)</span><span class="token operator">>></span><span class="token number">23</span><span class="token punctuation">;</span>
+  <span class="token keyword">unsigned</span> f <span class="token operator">=</span> <span class="token punctuation">(</span>uf <span class="token operator">&amp;</span> <span class="token number">0x7fffff</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">unsigned</span> ans<span class="token punctuation">;</span>
 
-  //特殊值，直接返回
-  if(e == 0xff)&#123;
-      return uf;
-  &#125;else if(e == 0)&#123;//非规格化
-      f <<= 1;
-      ans = (s<<31)|(e<<23)|f;
-  &#125;else&#123;//规格化
-      e++;
-      ans = (s<<31)|(e<<23)|f;
-  &#125;
-  return ans;
-
-&#125;
-</code></pre>
+  <span class="token comment">//特殊值，直接返回</span>
+  <span class="token keyword">if</span><span class="token punctuation">(</span>e <span class="token operator">==</span> <span class="token number">0xff</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+      <span class="token keyword">return</span> uf<span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span><span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>e <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span><span class="token comment">//非规格化</span>
+      f <span class="token operator">&lt;&lt;=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+      ans <span class="token operator">=</span> <span class="token punctuation">(</span>s<span class="token operator">&lt;&lt;</span><span class="token number">31</span><span class="token punctuation">)</span><span class="token operator">|</span><span class="token punctuation">(</span>e<span class="token operator">&lt;&lt;</span><span class="token number">23</span><span class="token punctuation">)</span><span class="token operator">|</span>f<span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span><span class="token keyword">else</span><span class="token punctuation">&#123;</span><span class="token comment">//规格化</span>
+      e<span class="token operator">++</span><span class="token punctuation">;</span>
+      ans <span class="token operator">=</span> <span class="token punctuation">(</span>s<span class="token operator">&lt;&lt;</span><span class="token number">31</span><span class="token punctuation">)</span><span class="token operator">|</span><span class="token punctuation">(</span>e<span class="token operator">&lt;&lt;</span><span class="token number">23</span><span class="token punctuation">)</span><span class="token operator">|</span>f<span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+  <span class="token keyword">return</span> ans<span class="token punctuation">;</span>
+  
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="12-floatFloat2Int"><a href="#12-floatFloat2Int" class="headerlink" title="12.floatFloat2Int"></a>12.floatFloat2Int</h2><p>&emsp;&emsp;这个函数让我们把一个给定的浮点数 uf 转换为 int 类型。因为 int 类型的范围相较于 float 小，所以会出现精度损失的情况。</p>
 <p>首先还是和上一题一样，求出符号位 s ，阶吗 exp ，尾数 frac。再计算一下真实的阶数 E = exp - 127。如果 E &gt;=31 时，即为特殊值时，按照题目的要求返回 0x80000000u。 如果 E &lt; 0 时，即为非规格化的值时，此时 0&lt;= f &lt; 1，直接返回 0 。最后对于规格化的值，就按照正常处理，即</p>
 <script type="math/tex; mode=display">
 V=(-1)^{s} \times M\times 2^{E}</script><p>&emsp;&emsp;先算出真实的尾数 M = frac | (1 &lt;&lt; 23)，同时 frac为23位，所以如果 E &gt;= 23则进行加权时，则要在frac的末尾加上（E - 23）个 0，若 E &lt; 23，则frac 末尾的（23-E）个数就无法保留，通过位运算可以实现。</p>
 <p>&emsp;&emsp;同时还有一点需要注意，就是输入的数可能为负数，所以最后还需根据 s 的值进行判断。</p>
 <p>&emsp;&emsp;最终代码如下</p>
-<pre class=" language-lang-c"><code class="language-lang-c">/* 
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">/* 
  * floatFloat2Int - Return bit-level equivalent of expression (int) f
  *   for floating point argument f.
  *   Argument is passed as unsigned int, but
@@ -509,31 +496,30 @@ V=(-1)^{s} \times M\times 2^{E}</script><p>&emsp;&emsp;先算出真实的尾数 
  *   single-precision floating point value.
  *   Anything out of range (including NaN and infinity) should return
  *   0x80000000u.
- *   Legal ops: Any integer/unsigned operations incl. ||, &&. also if, while
+ *   Legal ops: Any integer/unsigned operations incl. ||, &amp;&amp;. also if, while
  *   Max ops: 30
  *   Rating: 4
- */
-int floatFloat2Int(unsigned uf) &#123;
-  //同样先获得符号s，尾数f，阶码e
-  unsigned s = (uf>>31)&0x1;
-  unsigned e = (uf>>23)&0xff;
-  unsigned f = uf & 0x7fffff;
-
-  int E = e - 127;
-  if(E<0)return 0;
-  else if(E >= 31)return 0x80000000u;
-  else&#123;
-      f = f | 1<<23; 
-      if(E<23)&#123;
-           f >>= (23-E);
-      &#125;else&#123;
-           f <<= (E-23);
-      &#125;
-  &#125;
-  if (s)return -f;
-  else return f;
-&#125;
-</code></pre>
+ */</span>
+<span class="token keyword">int</span> <span class="token function">floatFloat2Int</span><span class="token punctuation">(</span><span class="token keyword">unsigned</span> uf<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token comment">//同样先获得符号s，尾数f，阶码e</span>
+  <span class="token keyword">unsigned</span> s <span class="token operator">=</span> <span class="token punctuation">(</span>uf<span class="token operator">>></span><span class="token number">31</span><span class="token punctuation">)</span><span class="token operator">&amp;</span><span class="token number">0x1</span><span class="token punctuation">;</span>
+  <span class="token keyword">unsigned</span> e <span class="token operator">=</span> <span class="token punctuation">(</span>uf<span class="token operator">>></span><span class="token number">23</span><span class="token punctuation">)</span><span class="token operator">&amp;</span><span class="token number">0xff</span><span class="token punctuation">;</span>
+  <span class="token keyword">unsigned</span> f <span class="token operator">=</span> uf <span class="token operator">&amp;</span> <span class="token number">0x7fffff</span><span class="token punctuation">;</span>
+  
+  <span class="token keyword">int</span> E <span class="token operator">=</span> e <span class="token operator">-</span> <span class="token number">127</span><span class="token punctuation">;</span>
+  <span class="token keyword">if</span><span class="token punctuation">(</span>E<span class="token operator">&lt;</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>E <span class="token operator">>=</span> <span class="token number">31</span><span class="token punctuation">)</span><span class="token keyword">return</span> <span class="token number">0x80000000u</span><span class="token punctuation">;</span>
+  <span class="token keyword">else</span><span class="token punctuation">&#123;</span>
+      f <span class="token operator">=</span> f <span class="token operator">|</span> <span class="token number">1</span><span class="token operator">&lt;&lt;</span><span class="token number">23</span><span class="token punctuation">;</span> 
+      <span class="token keyword">if</span><span class="token punctuation">(</span>E<span class="token operator">&lt;</span><span class="token number">23</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+           f <span class="token operator">>>=</span> <span class="token punctuation">(</span><span class="token number">23</span><span class="token operator">-</span>E<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span><span class="token keyword">else</span><span class="token punctuation">&#123;</span>
+           f <span class="token operator">&lt;&lt;=</span> <span class="token punctuation">(</span>E<span class="token operator">-</span><span class="token number">23</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token keyword">return</span> <span class="token operator">-</span>f<span class="token punctuation">;</span>
+  <span class="token keyword">else</span> <span class="token keyword">return</span> f<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="13-floatPower2"><a href="#13-floatPower2" class="headerlink" title="13.floatPower2"></a>13.floatPower2</h2><p>&emsp;&emsp;这一题要求计算浮点数2.0^x。因为在浮点数中阶码表示的意义正好就是2的多少次幂，所以我们想到对阶码出手。</p>
 <p>&emsp;&emsp;但是需要先导出浮点数规格化和非规格化分别表示的浮点数的范围。</p>
 <p>&emsp;&emsp;对于非规格化的 E = 1-Bias = 1- 127 = -126，而M的最小值则为0.000…1，等于 $2^{-23}$，所以非规格化浮点的最小值为 2 的 -149 次方，M的最大值则等于 $1-2^{-23}$，所以非规格化的浮点最大为 $2^{-126}\times(1-2^{-23})$。</p>
@@ -574,26 +560,25 @@ int floatFloat2Int(unsigned uf) &#123;
 <script type="math/tex; mode=display">
 M\times2^{-126}=2^{x}</script><p>可以推断出 $M=2^{x+126}$ 。尾码的值是二次幂的形式，所以可以通过一个“1”左移获得，就可以设 1 左移了 n 位，则 $x+126 = -(23-n)$，等到n = x+ 149。</p>
 <p>故最终解决方法如下</p>
-<pre class=" language-lang-c"><code class="language-lang-c">/* 
- * floatPower2 - Return bit-level equivalent of the expression 2.0^x
- *   (2.0 raised to the power x) for any 32-bit integer x.
- *
- *   The unsigned value that is returned should have the identical bit
- *   representation as the single-precision floating-point number 2.0^x.
- *   If the result is too small to be represented as a denorm, return
- *   0. If too large, return +INF.
- * 
- *   Legal ops: Any integer/unsigned operations incl. ||, &&. Also if, while 
- *   Max ops: 30 
- *   Rating: 4
- */
-unsigned floatPower2(int x) &#123;
-    if(x < -149)return 0;
-    else if(x <= -126)return 1<<(x+149);
-    else if(x <= 127)return (x+127) << 23;
-    else return 0xff << 23;
-&#125;
-</code></pre>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">/* 
+      * floatPower2 - Return bit-level equivalent of the expression 2.0^x
+      *   (2.0 raised to the power x) for any 32-bit integer x.
+      *
+      *   The unsigned value that is returned should have the identical bit
+      *   representation as the single-precision floating-point number 2.0^x.
+      *   If the result is too small to be represented as a denorm, return
+      *   0. If too large, return +INF.
+      * 
+      *   Legal ops: Any integer/unsigned operations incl. ||, &amp;&amp;. Also if, while 
+      *   Max ops: 30 
+      *   Rating: 4
+      */</span>
+     <span class="token keyword">unsigned</span> <span class="token function">floatPower2</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+         <span class="token keyword">if</span><span class="token punctuation">(</span>x <span class="token operator">&lt;</span> <span class="token operator">-</span><span class="token number">149</span><span class="token punctuation">)</span><span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+         <span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>x <span class="token operator">&lt;=</span> <span class="token operator">-</span><span class="token number">126</span><span class="token punctuation">)</span><span class="token keyword">return</span> <span class="token number">1</span><span class="token operator">&lt;&lt;</span><span class="token punctuation">(</span>x<span class="token operator">+</span><span class="token number">149</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>x <span class="token operator">&lt;=</span> <span class="token number">127</span><span class="token punctuation">)</span><span class="token keyword">return</span> <span class="token punctuation">(</span>x<span class="token operator">+</span><span class="token number">127</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> <span class="token number">23</span><span class="token punctuation">;</span>
+         <span class="token keyword">else</span> <span class="token keyword">return</span> <span class="token number">0xff</span> <span class="token operator">&lt;&lt;</span> <span class="token number">23</span><span class="token punctuation">;</span>
+     <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
 </ol>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结:"></a>总结:</h1><p>&emsp;&emsp;以上就是CSAPP DataLab的全部内容了，做完这个实验也算是对之前一段时间学习的一个巩固和练习吧，对于逻辑门运算和浮点运算也有了更多的了解。</p>

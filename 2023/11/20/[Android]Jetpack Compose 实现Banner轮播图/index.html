@@ -17,7 +17,7 @@
   localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
   translate: undefined,
   noticeOutdate: undefined,
-  highlight: {"plugin":"prismjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
   copy: {
     success: '复制成功',
     error: '复制错误',
@@ -168,127 +168,121 @@
 <h1 id="需求分析"><a href="#需求分析" class="headerlink" title="需求分析"></a>需求分析</h1><p>&emsp;&emsp;首先需要分析一下实现轮播图的功能。</p>
 <p>&emsp;&emsp;轮播图需要一直循环滑动播放，所以首先就是需要一个具有单页水平滑动效果的控件。在2023年3月底，Google 正式发布Jetpack Compose 的 1.4 版本，在这次的更新中，新增了 pager 等控件，它实现了View中ViewPager类似的功能。因此，水平分页器—— HorizontalPager 可以完美起这个重任。</p>
 <p>&emsp;&emsp;可以分析一下HorizontalPager的源码</p>
-<pre class=" language-lang-kotlin"><code class="language-lang-kotlin">@Composable
-@ExperimentalFoundationApi
-fun HorizontalPager(
-    state: PagerState,
-    modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(0.dp),
-    pageSize: PageSize = PageSize.Fill,
-    beyondBoundsPageCount: Int = 0,
-    pageSpacing: Dp = 0.dp,
-    verticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
-    flingBehavior: SnapFlingBehavior = PagerDefaults.flingBehavior(state = state),
-    userScrollEnabled: Boolean = true,
-    reverseLayout: Boolean = false,
-    key: ((index: Int) -> Any)? = null,
-    pageNestedScrollConnection: NestedScrollConnection = 
-        PagerDefaults.pageNestedScrollConnection(
-            Orientation.Horizontal
-    ),
-    pageContent: @Composable PagerScope.(page: Int) -> Unit
-)
-</code></pre>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token annotation builtin">@Composable</span>
+<span class="token annotation builtin">@ExperimentalFoundationApi</span>
+<span class="token keyword">fun</span> <span class="token function">HorizontalPager</span><span class="token punctuation">(</span>
+    state<span class="token operator">:</span> PagerState<span class="token punctuation">,</span>
+    modifier<span class="token operator">:</span> Modifier <span class="token operator">=</span> Modifier<span class="token punctuation">,</span>
+    contentPadding<span class="token operator">:</span> PaddingValues <span class="token operator">=</span> <span class="token function">PaddingValues</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">.</span>dp<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    pageSize<span class="token operator">:</span> PageSize <span class="token operator">=</span> PageSize<span class="token punctuation">.</span>Fill<span class="token punctuation">,</span>
+    beyondBoundsPageCount<span class="token operator">:</span> Int <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span>
+    pageSpacing<span class="token operator">:</span> Dp <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">.</span>dp<span class="token punctuation">,</span>
+    verticalAlignment<span class="token operator">:</span> Alignment<span class="token punctuation">.</span>Vertical <span class="token operator">=</span> Alignment<span class="token punctuation">.</span>CenterVertically<span class="token punctuation">,</span>
+    flingBehavior<span class="token operator">:</span> SnapFlingBehavior <span class="token operator">=</span> PagerDefaults<span class="token punctuation">.</span><span class="token function">flingBehavior</span><span class="token punctuation">(</span>state <span class="token operator">=</span> state<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    userScrollEnabled<span class="token operator">:</span> Boolean <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    reverseLayout<span class="token operator">:</span> Boolean <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+    key<span class="token operator">:</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>index<span class="token operator">:</span> Int<span class="token punctuation">)</span> <span class="token operator">-></span> Any<span class="token punctuation">)</span><span class="token operator">?</span> <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+    pageNestedScrollConnection<span class="token operator">:</span> NestedScrollConnection <span class="token operator">=</span> 
+    	PagerDefaults<span class="token punctuation">.</span><span class="token function">pageNestedScrollConnection</span><span class="token punctuation">(</span>
+        	Orientation<span class="token punctuation">.</span>Horizontal
+    <span class="token punctuation">)</span><span class="token punctuation">,</span>
+    pageContent<span class="token operator">:</span> <span class="token annotation builtin">@Composable</span> PagerScope<span class="token punctuation">.</span><span class="token punctuation">(</span>page<span class="token operator">:</span> Int<span class="token punctuation">)</span> <span class="token operator">-></span> Unit
+<span class="token punctuation">)</span> <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>&emsp;&emsp;其中最重要的当然是PagerState，顾名思义，这个就是用来管理HorizontalPager内pager状态的。这里是HorizontalPager的简单使用。</p>
-<pre class=" language-lang-kotlin"><code class="language-lang-kotlin"> // 显示 10 个项目
- HorizontalPager(pageCount = 10) &#123; page ->
-     // 每一页的内容，比如显示个文本
-     Text(
-         text = "Page: $page",
-         modifier = Modifier.fillMaxWidth()
-     )
- &#125;
-</code></pre>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"> <span class="token comment">// 显示 10 个项目</span>
+ <span class="token function">HorizontalPager</span><span class="token punctuation">(</span>pageCount <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> page <span class="token operator">-></span>
+     <span class="token comment">// 每一页的内容，比如显示个文本</span>
+     <span class="token function">Text</span><span class="token punctuation">(</span>
+         text <span class="token operator">=</span> <span class="token string-literal singleline"><span class="token string">"Page: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$</span><span class="token expression">page</span></span><span class="token string">"</span></span><span class="token punctuation">,</span>
+         modifier <span class="token operator">=</span> Modifier<span class="token punctuation">.</span><span class="token function">fillMaxWidth</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+     <span class="token punctuation">)</span>
+ <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>&emsp;&emsp;然后就是在人没有对其进行滑动的时候，需要轮播图进行自动循环，并具有延迟展示图片内容。PagerState提供了方法可以获得当前Pager是否处于拖动状态。所以可以先使用这个方法获得当前状态，然后进行判断。延迟则可以使用delay函数来实现。</p>
-<pre class=" language-lang-kotlin"><code class="language-lang-kotlin">val isDragged by pagerState.interactionSource.collectIsDraggedAsState()
-</code></pre>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">val</span> isDragged <span class="token keyword">by</span> pagerState<span class="token punctuation">.</span>interactionSource<span class="token punctuation">.</span><span class="token function">collectIsDraggedAsState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>&emsp;&emsp;最后还需要一个指示器，也可以使用 Box 或者 Canvas 简单实现，方法众多，可以尽情发挥。</p>
 <h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><p>&emsp;&emsp;通过上面的分析，可以来实现轮播图Banner了，现在将实现分为三步。</p>
 <h2 id="水平分页器"><a href="#水平分页器" class="headerlink" title="水平分页器"></a>水平分页器</h2><p>&emsp;&emsp;首先需要定义好Pager的数量——pagerCount。这里我定义了一个List用来存储图片的URL，之后也是使用了coil库来加载图片。因此，这里的 pagerCount 就等于 images.size。</p>
 <p>&emsp;&emsp;接着就是定义 HorizontalPager 的 pagerState，直接使用 rememberPagerState，然后将 pagerCount 传入。</p>
 <p>&emsp;&emsp;然后就可以使用HorizontalPager了，这里也设置了一下pageSpacing 来分隔此分页器中页面的空间量。同时写了个 BannerCard 来修饰一下图片，传入图片URL，然后使用 coil 的 AsyncImage 来加载图片。</p>
-<pre class=" language-lang-kotlin"><code class="language-lang-kotlin">@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun Banner(
-    images: List<String>,
-    autoScrollDuration: Long = 1500L   //延迟的时间，可以自行设置，后面要用到。
-) &#123;
-    val pagerCount = images.size
-    val pagerState = rememberPagerState&#123;
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token annotation builtin">@OptIn</span><span class="token punctuation">(</span>ExperimentalFoundationApi<span class="token operator">::</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+<span class="token annotation builtin">@Composable</span>
+<span class="token keyword">fun</span> <span class="token function">Banner</span><span class="token punctuation">(</span>
+    images<span class="token operator">:</span> List<span class="token operator">&lt;</span>String<span class="token operator">></span><span class="token punctuation">,</span>
+    autoScrollDuration<span class="token operator">:</span> Long <span class="token operator">=</span> <span class="token number">1500L</span>   <span class="token comment">//延迟的时间，可以自行设置，后面要用到。</span>
+<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">val</span> pagerCount <span class="token operator">=</span> images<span class="token punctuation">.</span>size
+    <span class="token keyword">val</span> pagerState <span class="token operator">=</span> rememberPagerState<span class="token punctuation">&#123;</span>
         pagerCount
-    &#125;
-    Box &#123;
-        HorizontalPager(
-            state = pagerState,
-            contentPadding = PaddingValues(horizontal = 32.dp),
-            pageSpacing = 16.dp
-        ) &#123;index ->
-            BannerCard(
-                imageURL = images[index],
-                modifier = Modifier
-                    .padding(top = 10.dp)
-            )
-        &#125;
-    &#125;
-&#125;
+    <span class="token punctuation">&#125;</span>
+    Box <span class="token punctuation">&#123;</span>
+        <span class="token function">HorizontalPager</span><span class="token punctuation">(</span>
+            state <span class="token operator">=</span> pagerState<span class="token punctuation">,</span>
+            contentPadding <span class="token operator">=</span> <span class="token function">PaddingValues</span><span class="token punctuation">(</span>horizontal <span class="token operator">=</span> <span class="token number">32</span><span class="token punctuation">.</span>dp<span class="token punctuation">)</span><span class="token punctuation">,</span>
+            pageSpacing <span class="token operator">=</span> <span class="token number">16</span><span class="token punctuation">.</span>dp
+        <span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>index <span class="token operator">-></span>
+            <span class="token function">BannerCard</span><span class="token punctuation">(</span>
+                imageURL <span class="token operator">=</span> images<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">,</span>
+                modifier <span class="token operator">=</span> Modifier
+                    <span class="token punctuation">.</span><span class="token function">padding</span><span class="token punctuation">(</span>top <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">.</span>dp<span class="token punctuation">)</span>
+            <span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
 
-@Composable
-fun BannerCard(
-    imageURL : String,
-    modifier : Modifier
-)&#123;
-    Card (modifier = modifier)&#123;
-        AsyncImage(model = imageURL, contentDescription = null)
-    &#125;
-&#125;
-</code></pre>
+<span class="token annotation builtin">@Composable</span>
+<span class="token keyword">fun</span> <span class="token function">BannerCard</span><span class="token punctuation">(</span>
+    imageURL <span class="token operator">:</span> String<span class="token punctuation">,</span>
+    modifier <span class="token operator">:</span> Modifier
+<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token function">Card</span> <span class="token punctuation">(</span>modifier <span class="token operator">=</span> modifier<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token function">AsyncImage</span><span class="token punctuation">(</span>model <span class="token operator">=</span> imageURL<span class="token punctuation">,</span> contentDescription <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>&emsp;&emsp;实现效果如下</p>
 <p><img src="/img/friend_404.gif" data-original="/$%7BuseImgs%7D/gif_1.gif" alt=""></p>
 <h2 id="自动循环与延迟"><a href="#自动循环与延迟" class="headerlink" title="自动循环与延迟"></a>自动循环与延迟</h2><p>&emsp;&emsp;首先先定义一个布尔类型的 isDragged 来获取是否处于拖动状态，然后对其进行判断，当没有人为拖动时，使用kotlin中的with 函数，在里面设立一个局部变量来储存当前页数的值，然后将其作为 LaunchedEffect （协程是Android kotlin开发中一个重要知识，在Compose中采用附带效应 effect 来实现协程开发）的参数，在协程使用 pagerState 的函数 animateScrollToPage 来实现自动滑动，nextPage 通过当前页数 + 1然后再对总页数取模来实现循环。</p>
-<pre class=" language-lang-kotlin"><code class="language-lang-kotlin">val isDragged by pagerState.interactionSource.collectIsDraggedAsState()
-if (isDragged.not())&#123;
-        with(pagerState)&#123;
-            var currentPageKey by remember &#123; mutableIntStateOf(0) &#125;
-            LaunchedEffect(key1 = currentPageKey)&#123;
-                launch &#123;
-                    delay(timeMillis = autoScrollDuration)
-                    val nextPage = (currentPage + 1).mod(pageCount)
-                    animateScrollToPage(page = nextPage)
-                    currentPageKey = nextPage
-                &#125;
-            &#125;
-        &#125;
-    &#125;
-</code></pre>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">val</span> isDragged <span class="token keyword">by</span> pagerState<span class="token punctuation">.</span>interactionSource<span class="token punctuation">.</span><span class="token function">collectIsDraggedAsState</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>isDragged<span class="token punctuation">.</span><span class="token function">not</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token function">with</span><span class="token punctuation">(</span>pagerState<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            <span class="token keyword">var</span> currentPageKey <span class="token keyword">by</span> remember <span class="token punctuation">&#123;</span> <span class="token function">mutableIntStateOf</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#125;</span>
+            <span class="token function">LaunchedEffect</span><span class="token punctuation">(</span>key1 <span class="token operator">=</span> currentPageKey<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+                launch <span class="token punctuation">&#123;</span>
+                    <span class="token function">delay</span><span class="token punctuation">(</span>timeMillis <span class="token operator">=</span> autoScrollDuration<span class="token punctuation">)</span>
+                    <span class="token keyword">val</span> nextPage <span class="token operator">=</span> <span class="token punctuation">(</span>currentPage <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">mod</span><span class="token punctuation">(</span>pageCount<span class="token punctuation">)</span>
+                    <span class="token function">animateScrollToPage</span><span class="token punctuation">(</span>page <span class="token operator">=</span> nextPage<span class="token punctuation">)</span>
+                    currentPageKey <span class="token operator">=</span> nextPage
+                <span class="token punctuation">&#125;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>&emsp;&emsp;将其加入后再次启动（虚拟机！启动！！！）如下，发现已经可以自己循环播放了。</p>
 <p><img src="/img/friend_404.gif" data-original="/$%7BuseImgs%7D/gif_2.gif" alt=""></p>
 <h2 id="添加指示器"><a href="#添加指示器" class="headerlink" title="添加指示器"></a>添加指示器</h2><p>&emsp;&emsp;添加指示器，本蒟蒻采用的是 Canvas 来实现。首先在一行中使用 repeat 函数进行重复，有多少张图就 repeat 多少次，即repeat（pageCount）,然后定义颜色，与当前页数相同的指示点颜色与其他点颜色进行区别，既然要画点，所以使用 Canvas 中的 drawCircle 来进行绘画，可以自行定义大小。</p>
 <p>&emsp;&emsp;因为要使用pagerState来获得当前页数，所以指示器需要传入pagerState，和pagerCount。同时需要通过 modifier 修饰符将指示器放在父 Box 容器的底部，这样指示器就可以显示在图片的上方，并处于底部。</p>
-<pre class=" language-lang-kotlin"><code class="language-lang-kotlin">@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun DotIndicators(
-    pageCount : Int,
-    pagerState : PagerState,
-    modifier: Modifier
-)&#123;
-    Row (
-        modifier = modifier.padding(bottom = 7.dp),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.Bottom
-    )&#123;
-        repeat(pageCount)&#123;iteration ->
-            val color = if (pagerState.currentPage == iteration) MaterialTheme.colorScheme.surface 
-                          else MaterialTheme.colorScheme.onSurface
-            Canvas(
-                modifier = Modifier
-                    .size(12.dp)
-                    .padding(horizontal = 2.dp), onDraw = &#123;
-                drawCircle(color)
-            &#125;)
-        &#125;
-    &#125;
-&#125;
-</code></pre>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token annotation builtin">@OptIn</span><span class="token punctuation">(</span>ExperimentalFoundationApi<span class="token operator">::</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+<span class="token annotation builtin">@Composable</span>
+<span class="token keyword">fun</span> <span class="token function">DotIndicators</span><span class="token punctuation">(</span>
+    pageCount <span class="token operator">:</span> Int<span class="token punctuation">,</span>
+    pagerState <span class="token operator">:</span> PagerState<span class="token punctuation">,</span>
+    modifier<span class="token operator">:</span> Modifier
+<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token function">Row</span> <span class="token punctuation">(</span>
+        modifier <span class="token operator">=</span> modifier<span class="token punctuation">.</span><span class="token function">padding</span><span class="token punctuation">(</span>bottom <span class="token operator">=</span> <span class="token number">7</span><span class="token punctuation">.</span>dp<span class="token punctuation">)</span><span class="token punctuation">,</span>
+        horizontalArrangement <span class="token operator">=</span> Arrangement<span class="token punctuation">.</span>Center<span class="token punctuation">,</span>
+        verticalAlignment <span class="token operator">=</span> Alignment<span class="token punctuation">.</span>Bottom
+    <span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token function">repeat</span><span class="token punctuation">(</span>pageCount<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>iteration <span class="token operator">-></span>
+            <span class="token keyword">val</span> color <span class="token operator">=</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>pagerState<span class="token punctuation">.</span>currentPage <span class="token operator">==</span> iteration<span class="token punctuation">)</span> MaterialTheme<span class="token punctuation">.</span>colorScheme<span class="token punctuation">.</span>surface 
+                          <span class="token keyword">else</span> MaterialTheme<span class="token punctuation">.</span>colorScheme<span class="token punctuation">.</span>onSurface
+            <span class="token function">Canvas</span><span class="token punctuation">(</span>
+                modifier <span class="token operator">=</span> Modifier
+                	<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">.</span>dp<span class="token punctuation">)</span>
+                	<span class="token punctuation">.</span><span class="token function">padding</span><span class="token punctuation">(</span>horizontal <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">.</span>dp<span class="token punctuation">)</span><span class="token punctuation">,</span> onDraw <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+                <span class="token function">drawCircle</span><span class="token punctuation">(</span>color<span class="token punctuation">)</span>
+            <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>&emsp;&emsp;最后再次启动！</p>
 <p><img src="/img/friend_404.gif" data-original="/$%7BuseImgs%7D/gif_3.gif" alt=""></p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>&emsp;&emsp;如此如此，这般这般，就实现了轮播图的效果，如果任觉得不满于此，也可以跟随自己的想法去将其变得更加 niu pi。同时也可以多多探索。</p>
