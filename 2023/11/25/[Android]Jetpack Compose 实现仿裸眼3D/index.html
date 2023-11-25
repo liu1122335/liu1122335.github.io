@@ -1,0 +1,343 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>[Android]Jetpack Compose 实现仿裸眼3D | 飞行艇</title><meta name="author" content="山川与酒"><meta name="copyright" content="山川与酒"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="前言&amp;emsp;&amp;emsp;最近在学传感器的时候，看到了有大佬使用 Jetpack Compose 实现了一个仿裸眼3D的效果，十分的牛皮，看得我是心血来潮、热血澎湃，这里放上推荐链接：Compose版来啦！仿自如裸眼3D效果 - 掘金 (juejin.cn)。于是就也想拥有，所以按照大佬的思路，使用Android 传感器中的陀螺仪来进行一个实现。同时也可以去了解一下 Android 中传感器（S">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Android]Jetpack Compose 实现仿裸眼3D">
+<meta property="og:url" content="https://liu1122335.github.io/2023/11/25/[Android]Jetpack%20Compose%20%E5%AE%9E%E7%8E%B0%E4%BB%BF%E8%A3%B8%E7%9C%BC3D/index.html">
+<meta property="og:site_name" content="飞行艇">
+<meta property="og:description" content="前言&amp;emsp;&amp;emsp;最近在学传感器的时候，看到了有大佬使用 Jetpack Compose 实现了一个仿裸眼3D的效果，十分的牛皮，看得我是心血来潮、热血澎湃，这里放上推荐链接：Compose版来啦！仿自如裸眼3D效果 - 掘金 (juejin.cn)。于是就也想拥有，所以按照大佬的思路，使用Android 传感器中的陀螺仪来进行一个实现。同时也可以去了解一下 Android 中传感器（S">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://liu1122335.github.io/img/avatar.jpg">
+<meta property="article:published_time" content="2023-11-25T09:31:48.000Z">
+<meta property="article:modified_time" content="2023-11-25T09:53:08.399Z">
+<meta property="article:author" content="山川与酒">
+<meta property="article:tag" content="Android">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://liu1122335.github.io/img/avatar.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://liu1122335.github.io/2023/11/25/[Android]Jetpack%20Compose%20%E5%AE%9E%E7%8E%B0%E4%BB%BF%E8%A3%B8%E7%9C%BC3D/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://unpkg.com/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://unpkg.com/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://unpkg.com/flickr-justified-gallery/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '[Android]Jetpack Compose 实现仿裸眼3D',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-11-25 17:53:08'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/universe.css"><link rel="stylesheet" href="/css/footer.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/friend_404.gif" data-original="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">4</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 博文</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background: transparent"><nav id="nav"><span id="blog-info"><a href="/" title="飞行艇"><span class="site-name">飞行艇</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 博文</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">[Android]Jetpack Compose 实现仿裸眼3D</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-11-25T09:31:48.000Z" title="发表于 2023-11-25 17:31:48">2023-11-25</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-11-25T09:53:08.399Z" title="更新于 2023-11-25 17:53:08">2023-11-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Android/">Android</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Android/Compose/">Compose</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="[Android]Jetpack Compose 实现仿裸眼3D"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>&emsp;&emsp;最近在学传感器的时候，看到了有大佬使用 Jetpack Compose 实现了一个仿裸眼3D的效果，十分的牛皮，看得我是心血来潮、热血澎湃，这里放上推荐链接：<a target="_blank" rel="noopener" href="https://juejin.cn/post/6992169168938205191">Compose版来啦！仿自如裸眼3D效果 - 掘金 (juejin.cn)</a>。于是就也想拥有，所以按照大佬的思路，使用Android 传感器中的陀螺仪来进行一个实现。同时也可以去了解一下 Android 中传感器（Sensor）的使用，这里送上官方传感器文档：<a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/topics/sensors?hl=zh-cn">传感器  | Android 开发者  | Android Developers (google.cn)</a>。</p>
+<h1 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h1><p>&emsp;&emsp;根据上方大佬的思路，我们可以很好地理解的这个仿裸眼3D的原理，简单来说，就是将一张图进行抠图，将其分为前、中、后三个图层（也可以是自己找的三个元素），然后使用 Canvas 里面的 drawImage 函数将三张图画出（使用这个方法加载图片方便进行位移）。</p>
+<p>&emsp;&emsp;接着对前、后图层使用 translate 函数，通过设置位移量来实现图层的移动，所以只需要通过改变位移量就可以对图片进行位移。这里要注意，要实现仿裸眼3D，就需要在前层图片往一个方向移动时，后层图片向另一个方向移动，中层图片则不动，所以对于前层和后层的 translate 函数的传值要对应取反。</p>
+<p>&emsp;&emsp;于是现在就需要实现在翻转手机时，为 translate 函数提供相应的位移量。就使用到了陀螺仪传感器，在转动手机时，传感器会传回 x、y、z 三个方向（判断方向如下图所示）的角速度，往正方向翻转会传回一个正的角速度，往负方向翻转会传回一个负的角速度。</p>
+<p><img src="/img/friend_404.gif" data-original="/imgs/$%7BuseImgs%7D/img_9.png" alt=""></p>
+<p>&emsp;&emsp;得到了这个方向上的角速度，就可以由一个基本的物理公式 $\omega = \frac{<em>{\Delta }\Theta  }{</em>{\Delta}t} $ 求出所转过的角度（rad）是多少（若不熟悉弧度制，可使用 Math 库中的 Degress 函数将弧度制转化为角度制），然后和大佬思路一致，设置最大角度和最大平移距离（可以根据自己的），通过</p>
+<script type="math/tex; mode=display">
+{\color{Violet} \frac{旋转角度}{最大旋转角度} = \frac{平移距离}{最大平移距离}}</script><p>求出该旋转角度下图片的平移距离。</p>
+<p>&emsp;&emsp;为了获取角度值，就需要得到时间，不用担心，在官方文档介绍陀螺仪的部分中，其示例中就有对时间的积累，即获取时间。如下</p>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">val</span> NS2S <span class="token operator">=</span> <span class="token number">1.0f</span> <span class="token operator">/</span> <span class="token number">1000000000.0f</span>
+<span class="token keyword">var</span> timestamp<span class="token operator">:</span> Float <span class="token operator">=</span> <span class="token number">0f</span>
+sensorManager<span class="token punctuation">.</span><span class="token function">registerListener</span><span class="token punctuation">(</span><span class="token keyword">object</span> <span class="token operator">:</span> SensorEventListener<span class="token punctuation">&#123;</span>
+        <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">onSensorChanged</span><span class="token punctuation">(</span>event<span class="token operator">:</span> SensorEvent<span class="token operator">?</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token comment">// This timestep's delta rotation to be multiplied by the current rotation</span>
+            <span class="token comment">// after computing it from the gyro sample data.</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>timestamp <span class="token operator">!=</span> <span class="token number">0f</span> <span class="token operator">&amp;&amp;</span> event <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token keyword">val</span> dT <span class="token operator">=</span> <span class="token punctuation">(</span>event<span class="token punctuation">.</span>timestamp <span class="token operator">-</span> timestamp<span class="token punctuation">)</span> <span class="token operator">*</span> NS2S
+                <span class="token comment">/*
+                *中间省略大部分
+                */</span>
+            <span class="token punctuation">&#125;</span>
+            timestamp <span class="token operator">=</span> event<span class="token operator">?</span><span class="token punctuation">.</span>timestamp<span class="token operator">?</span><span class="token punctuation">.</span><span class="token function">toFloat</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">?:</span> <span class="token number">0f</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这样就可以开始实操了。</p>
+<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><h2 id="三层图片绘制"><a href="#三层图片绘制" class="headerlink" title="三层图片绘制"></a>三层图片绘制</h2><p>&emsp;&emsp;按照上面的思路，首先需要有三层的图片，然后把他们绘制在一起，然后对前层与后层的图片加上 translate 函数用于平移。</p>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">private</span> <span class="token keyword">const</span> <span class="token keyword">val</span> NS2S <span class="token operator">=</span> <span class="token number">1.0f</span> <span class="token operator">/</span> <span class="token number">1000000000.0f</span>
+<span class="token keyword">private</span> <span class="token keyword">var</span> timestamp <span class="token operator">:</span> Float <span class="token operator">=</span> <span class="token number">0f</span>
+<span class="token keyword">private</span> <span class="token keyword">const</span> <span class="token keyword">val</span> maxAngle <span class="token operator">:</span> Float <span class="token operator">=</span> <span class="token number">60f</span>          <span class="token comment">//设置最大角度，我使用的是角度制</span>
+<span class="token keyword">private</span> <span class="token keyword">const</span> <span class="token keyword">val</span> maxOffset <span class="token operator">:</span> Float <span class="token operator">=</span> <span class="token number">100f</span>        <span class="token comment">//设置最大平移距离  </span>
+
+<span class="token annotation builtin">@Composable</span>
+<span class="token keyword">fun</span> <span class="token function">ClassFree3D</span><span class="token punctuation">(</span>
+    sensorManager<span class="token operator">:</span> SensorManager
+<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">val</span> imageBack <span class="token operator">=</span> ImageBitmap<span class="token punctuation">.</span><span class="token function">imageResource</span><span class="token punctuation">(</span>id <span class="token operator">=</span> R<span class="token punctuation">.</span>drawable<span class="token punctuation">.</span>imgback<span class="token punctuation">)</span>
+    <span class="token keyword">val</span> imageMid <span class="token operator">=</span> ImageBitmap<span class="token punctuation">.</span><span class="token function">imageResource</span><span class="token punctuation">(</span>id <span class="token operator">=</span> R<span class="token punctuation">.</span>drawable<span class="token punctuation">.</span>imgmid<span class="token punctuation">)</span>
+    <span class="token keyword">val</span> imageFore <span class="token operator">=</span> ImageBitmap<span class="token punctuation">.</span><span class="token function">imageResource</span><span class="token punctuation">(</span>id <span class="token operator">=</span> R<span class="token punctuation">.</span>drawable<span class="token punctuation">.</span>imgfore<span class="token punctuation">)</span>
+    
+    <span class="token keyword">var</span> xDistance <span class="token keyword">by</span> remember <span class="token punctuation">&#123;</span> <span class="token function">mutableFloatStateOf</span><span class="token punctuation">(</span><span class="token number">0f</span><span class="token punctuation">)</span> <span class="token punctuation">&#125;</span>
+    <span class="token keyword">var</span> yDistance <span class="token keyword">by</span> remember <span class="token punctuation">&#123;</span> <span class="token function">mutableFloatStateOf</span><span class="token punctuation">(</span><span class="token number">0f</span><span class="token punctuation">)</span> <span class="token punctuation">&#125;</span>
+
+    <span class="token function">Box</span><span class="token punctuation">(</span>modifier <span class="token operator">=</span> Modifier<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token function">Canvas</span><span class="token punctuation">(</span>
+            modifier <span class="token operator">=</span> Modifier
+                <span class="token punctuation">.</span><span class="token function">fillMaxSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token comment">//通过设置scale设置图片边界，防止在平移过程中图片平移过大导致露出屏幕背景</span>
+                <span class="token punctuation">.</span><span class="token function">scale</span><span class="token punctuation">(</span><span class="token number">1.3f</span><span class="token punctuation">)</span>
+        <span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            <span class="token function">translate</span><span class="token punctuation">(</span><span class="token operator">-</span>yDistance<span class="token punctuation">,</span><span class="token operator">-</span>xDistance<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>     <span class="token comment">//对于前层取反，实现反向移动</span>
+                <span class="token function">drawImage</span><span class="token punctuation">(</span>imageBack<span class="token punctuation">)</span>
+            <span class="token punctuation">&#125;</span>
+            <span class="token function">drawImage</span><span class="token punctuation">(</span>
+                image <span class="token operator">=</span> imageMid<span class="token punctuation">,</span>
+                <span class="token comment">//这里通过 drawImage 同时对图片进行一个定位，使三张图片组合得好看</span>
+                dstOffset <span class="token operator">=</span> <span class="token function">IntOffset</span><span class="token punctuation">(</span>x <span class="token operator">=</span> <span class="token number">150</span><span class="token punctuation">,</span>y <span class="token operator">=</span> <span class="token number">350</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                dstSize <span class="token operator">=</span> <span class="token function">IntSize</span><span class="token punctuation">(</span>width <span class="token operator">=</span> imageMid<span class="token punctuation">.</span>width <span class="token operator">-</span> <span class="token number">1000</span><span class="token punctuation">,</span> height <span class="token operator">=</span> imageMid<span class="token punctuation">.</span>height <span class="token operator">-</span> <span class="token number">300</span><span class="token punctuation">)</span>
+            <span class="token punctuation">)</span>
+            <span class="token function">translate</span><span class="token punctuation">(</span>yDistance<span class="token punctuation">,</span>xDistance<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token function">drawImage</span><span class="token punctuation">(</span>
+                    image <span class="token operator">=</span> imageFore<span class="token punctuation">,</span>
+                    <span class="token comment">//与上面同理</span>
+                    dstOffset <span class="token operator">=</span> <span class="token function">IntOffset</span><span class="token punctuation">(</span>x <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span>y <span class="token operator">=</span> <span class="token number">480</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                    dstSize <span class="token operator">=</span> <span class="token function">IntSize</span><span class="token punctuation">(</span>width <span class="token operator">=</span> imageFore<span class="token punctuation">.</span>width <span class="token operator">-</span> <span class="token number">200</span><span class="token punctuation">,</span> height <span class="token operator">=</span> imageFore<span class="token punctuation">.</span>height<span class="token punctuation">)</span>
+                <span class="token punctuation">)</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>平面绘制出来的图片如下所示（本人直男审美，可根据个人喜爱自由发挥。）</p>
+<p><img src="/img/friend_404.gif" data-original="/imgs/$%7BuseImgs%7D/img_10.png" alt=""></p>
+<h2 id="陀螺仪获取角速度"><a href="#陀螺仪获取角速度" class="headerlink" title="陀螺仪获取角速度"></a>陀螺仪获取角速度</h2><p>&emsp;&emsp;Android为我们提供了一个 SensorManager 类来管理所有的传感器。故可以在主活动中获取一个 sensorManager 将其传给我们的这个组件，再在这个组件中获取陀螺仪传感器，并对其进行注册监听事件，获取翻转时的角速度和时间。</p>
+<p>&emsp;&emsp;在主活动中获取 sensorManager：</p>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">val</span> sensorManager <span class="token operator">=</span> <span class="token function">getSystemService</span><span class="token punctuation">(</span>Context<span class="token punctuation">.</span>SENSOR_SERVICE<span class="token punctuation">)</span> <span class="token keyword">as</span> SensorManager<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>&emsp;&emsp;将其传入组件：</p>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token function">ClassFree3D</span><span class="token punctuation">(</span>sensorManager <span class="token operator">=</span> sensorManager<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>&emsp;&emsp;然后再组件中获取陀螺仪传感器并注册监听器，获取角速度的累积，乘以时间，获取x、y、z三个方向的角度。</p>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">val</span> sensor <span class="token operator">=</span> sensorManager<span class="token punctuation">.</span><span class="token function">getDefaultSensor</span><span class="token punctuation">(</span>Sensor<span class="token punctuation">.</span>TYPE_GYROSCOPE<span class="token punctuation">)</span>
+<span class="token keyword">var</span> angularX <span class="token keyword">by</span> remember <span class="token punctuation">&#123;</span> <span class="token function">mutableFloatStateOf</span><span class="token punctuation">(</span><span class="token number">0f</span><span class="token punctuation">)</span> <span class="token punctuation">&#125;</span>
+<span class="token keyword">var</span> angularY <span class="token keyword">by</span> remember <span class="token punctuation">&#123;</span> <span class="token function">mutableFloatStateOf</span><span class="token punctuation">(</span><span class="token number">0f</span><span class="token punctuation">)</span> <span class="token punctuation">&#125;</span>
+<span class="token keyword">var</span> angularZ <span class="token keyword">by</span> remember <span class="token punctuation">&#123;</span> <span class="token function">mutableFloatStateOf</span><span class="token punctuation">(</span><span class="token number">0f</span><span class="token punctuation">)</span> <span class="token punctuation">&#125;</span>
+sensorManager<span class="token punctuation">.</span><span class="token function">registerListener</span><span class="token punctuation">(</span><span class="token keyword">object</span> <span class="token operator">:</span> SensorEventListener<span class="token punctuation">&#123;</span>
+        <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">onSensorChanged</span><span class="token punctuation">(</span>event<span class="token operator">:</span> SensorEvent<span class="token operator">?</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>timestamp <span class="token operator">!=</span> <span class="token number">0f</span> <span class="token operator">&amp;&amp;</span> event <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+                <span class="token keyword">val</span> dT <span class="token operator">=</span> <span class="token punctuation">(</span>event<span class="token punctuation">.</span>timestamp <span class="token operator">-</span> timestamp<span class="token punctuation">)</span> <span class="token operator">*</span> NS2S
+
+                angularX <span class="token operator">+=</span> event<span class="token punctuation">.</span>values<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> dT
+                angularY <span class="token operator">+=</span> event<span class="token punctuation">.</span>values<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">*</span> dT
+                angularZ <span class="token operator">+=</span> event<span class="token punctuation">.</span>values<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">*</span> dT
+
+				<span class="token comment">//这里将弧度制转化为角度制</span>
+                <span class="token keyword">var</span> angleX <span class="token operator">:</span> Float <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">toDegrees</span><span class="token punctuation">(</span>angularX<span class="token punctuation">.</span><span class="token function">toDouble</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toFloat</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                <span class="token keyword">var</span> angleY <span class="token operator">:</span> Float <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">toDegrees</span><span class="token punctuation">(</span>angularY<span class="token punctuation">.</span><span class="token function">toDouble</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toFloat</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                <span class="token keyword">var</span> angleZ <span class="token operator">:</span> Float <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">toDegrees</span><span class="token punctuation">(</span>angularZ<span class="token punctuation">.</span><span class="token function">toDouble</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toFloat</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+            <span class="token punctuation">&#125;</span>
+            timestamp <span class="token operator">=</span> event<span class="token operator">?</span><span class="token punctuation">.</span>timestamp<span class="token operator">?</span><span class="token punctuation">.</span><span class="token function">toFloat</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">?:</span> <span class="token number">0f</span>
+        <span class="token punctuation">&#125;</span>
+
+        <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">onAccuracyChanged</span><span class="token punctuation">(</span>sensor<span class="token operator">:</span> Sensor<span class="token operator">?</span><span class="token punctuation">,</span> accuracy<span class="token operator">:</span> Int<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+
+        <span class="token punctuation">&#125;</span>
+
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>sensor<span class="token punctuation">,</span>SensorManager<span class="token punctuation">.</span>SENSOR_STATUS_ACCURACY_LOW<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="进行运算"><a href="#进行运算" class="headerlink" title="进行运算"></a>进行运算</h2><p>&emsp;&emsp;然后由上面的公式进行运算，通过角度获得平移距离，同时也设置了最大的角度，这样就有最大的平移距离，这样可以防止平移距离过大而导致屏幕背景暴露。</p>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">if</span> <span class="token punctuation">(</span>angleY <span class="token operator">></span> maxAngle<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        angleY <span class="token operator">=</span> maxAngle
+    <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>angleY <span class="token operator">&lt;</span> <span class="token operator">-</span>maxAngle<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        angleY <span class="token operator">=</span> <span class="token operator">-</span>maxAngle
+    <span class="token punctuation">&#125;</span>
+
+<span class="token keyword">if</span> <span class="token punctuation">(</span>angleX <span class="token operator">></span> maxAngle<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        angleX <span class="token operator">=</span> maxAngle
+    <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>angleX <span class="token operator">&lt;</span> <span class="token operator">-</span>maxAngle<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        angleX <span class="token operator">=</span> <span class="token operator">-</span>maxAngle
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">val</span> xRadio <span class="token operator">:</span> Float <span class="token operator">=</span> <span class="token punctuation">(</span>angleX <span class="token operator">/</span> maxAngle<span class="token punctuation">)</span>
+    <span class="token keyword">val</span> yRadio <span class="token operator">:</span> Float <span class="token operator">=</span> <span class="token punctuation">(</span>angleY <span class="token operator">/</span> maxAngle<span class="token punctuation">)</span>
+
+    xDistance <span class="token operator">=</span> xRadio <span class="token operator">*</span> maxOffset
+    yDistance <span class="token operator">=</span> yRadio <span class="token operator">*</span> maxOffset<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>&emsp;&emsp;这样就在手机每次翻转的时候都会获取新的角度，从而改变平移距离，这样图片就可以随时发生平移，实现了仿裸眼3D的功能。</p>
+<h2 id="结果展示"><a href="#结果展示" class="headerlink" title="结果展示"></a>结果展示</h2><p>&emsp;&emsp;这里直接展示</p>
+<center><img src="/img/friend_404.gif" data-original="/imgs/$%7BuseImgs%7D/gif_4.gif" width = "" height = ""></center>
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>&emsp;&emsp;说实话，实现之后自己都觉得很好看，同时也知道了如何去操作陀螺仪传感器，这也可以去实现许多交互上的创意。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://liu1122335.github.io">山川与酒</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://liu1122335.github.io/2023/11/25/[Android]Jetpack%20Compose%20%E5%AE%9E%E7%8E%B0%E4%BB%BF%E8%A3%B8%E7%9C%BC3D/">https://liu1122335.github.io/2023/11/25/[Android]Jetpack Compose 实现仿裸眼3D/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://liu1122335.github.io" target="_blank">飞行艇</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Android/">Android</a></div><div class="post_share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://unpkg.com/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://unpkg.com/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2023/11/20/%5BAndroid%5DJetpack%20Compose%20%E5%AE%9E%E7%8E%B0Banner%E8%BD%AE%E6%92%AD%E5%9B%BE/" title="[Android]Jetpack Compose 实现Banner轮播图"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">[Android]Jetpack Compose 实现Banner轮播图</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/11/20/%5BAndroid%5DJetpack%20Compose%20%E5%AE%9E%E7%8E%B0Banner%E8%BD%AE%E6%92%AD%E5%9B%BE/" title="[Android]Jetpack Compose 实现Banner轮播图"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-11-20</div><div class="title">[Android]Jetpack Compose 实现Banner轮播图</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/friend_404.gif" data-original="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">山川与酒</div><div class="author-info__description">不要为降临于世的命运而哀叹</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">4</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/liu1122335"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/liu1122335" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:2869753184@qq.com" target="_blank" title="Email"><i class="fas fa-envelope-open-text"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">实现原理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">3.</span> <span class="toc-text">代码实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E5%B1%82%E5%9B%BE%E7%89%87%E7%BB%98%E5%88%B6"><span class="toc-number">3.1.</span> <span class="toc-text">三层图片绘制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%80%E8%9E%BA%E4%BB%AA%E8%8E%B7%E5%8F%96%E8%A7%92%E9%80%9F%E5%BA%A6"><span class="toc-number">3.2.</span> <span class="toc-text">陀螺仪获取角速度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E8%A1%8C%E8%BF%90%E7%AE%97"><span class="toc-number">3.3.</span> <span class="toc-text">进行运算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E6%9E%9C%E5%B1%95%E7%A4%BA"><span class="toc-number">3.4.</span> <span class="toc-text">结果展示</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/11/25/%5BAndroid%5DJetpack%20Compose%20%E5%AE%9E%E7%8E%B0%E4%BB%BF%E8%A3%B8%E7%9C%BC3D/" title="[Android]Jetpack Compose 实现仿裸眼3D">[Android]Jetpack Compose 实现仿裸眼3D</a><time datetime="2023-11-25T09:31:48.000Z" title="发表于 2023-11-25 17:31:48">2023-11-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/11/20/%5BAndroid%5DJetpack%20Compose%20%E5%AE%9E%E7%8E%B0Banner%E8%BD%AE%E6%92%AD%E5%9B%BE/" title="[Android]Jetpack Compose 实现Banner轮播图">[Android]Jetpack Compose 实现Banner轮播图</a><time datetime="2023-11-20T14:30:00.000Z" title="发表于 2023-11-20 22:30:00">2023-11-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/11/%5B%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%5DCSAPP%20DataLab%20%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" title="[深入理解计算机系统]CSAPP DataLab 学习记录">[深入理解计算机系统]CSAPP DataLab 学习记录</a><time datetime="2023-10-11T11:36:28.000Z" title="发表于 2023-10-11 19:36:28">2023-10-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/08/hello-world/" title="Hello World">Hello World</a><time datetime="2023-10-08T07:47:28.952Z" title="发表于 2023-10-08 15:47:28">2023-10-08</time></div></div></div></div></div></div></main><footer id="footer" style="background: transparent"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By 山川与酒</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div><div class="container" id="jsi-flying-fish-container"><script src="js/fish.js"></script></div><style>   @media only screen and (max-width: 767px){
+   #sidebar_search_box input[type=text]{width:calc(100% - 24px)}
+}</style></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://unpkg.com/@fancyapps/ui/dist/fancybox/fancybox.umd.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://unpkg.com/mathjax/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script></div><script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script><script src="https://gcore.jsdelivr.net/gh/xiabo2/CDN@latest/fish.js"></script><canvas id="universe"></canvas><script src="/js/universe.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="true" src="https://unpkg.com/butterfly-extsrc/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div class="no-result" id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div>
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(r){r.imageLazyLoadSetting.processImages=t;var e=r.imageLazyLoadSetting.isSPA,n=r.imageLazyLoadSetting.preloadRatio||1,c=a();function a(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(){e&&(c=a());for(var t,o=0;o<c.length;o++)0<=(t=(t=c[o]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(r.innerHeight*n||document.documentElement.clientHeight*n)&&function(){var t,e,n,a,i=c[o];e=function(){c=c.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(n=new Image,a=t.getAttribute("data-original"),n.onload=function(){t.src=a,t.removeAttribute("data-original"),e&&e()},t.src!==a&&(n.src=a))}()}function i(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",i),r.addEventListener("resize",i),r.addEventListener("orientationchange",i)}(this);</script></body></html>
